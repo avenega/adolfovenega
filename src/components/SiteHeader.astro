@@ -1,0 +1,110 @@
+---
+import { profile } from '../data/profile';
+
+const links = [
+	{ href: '#sobre-mi', label: 'Sobre mí' },
+	{ href: '#experiencia', label: 'Experiencia' },
+	{ href: '#proyectos', label: 'Proyectos' },
+	{ href: '#habilidades', label: 'Habilidades' },
+	{ href: '#contacto', label: 'Contacto' },
+];
+---
+
+<header class="site-header">
+	<div class="site-shell site-header__inner">
+		<a class="brand" href="#inicio">{profile.shortName}</a>
+
+		<nav class="nav-desktop" aria-label="Principal">
+			<ul class="nav-desktop">
+				{
+					links.map((link) => (
+						<li>
+							<a href={link.href}>{link.label}</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<div class="header-actions">
+			<label class="theme-toggle">
+				<input id="theme-toggle" type="checkbox" />
+				<span>Invertir tema</span>
+			</label>
+
+			<button
+				class="menu-button"
+				type="button"
+				id="drawer-open"
+				aria-label="Abrir menú"
+				aria-expanded="false"
+				aria-controls="drawer"
+			>
+				Menú
+			</button>
+		</div>
+	</div>
+</header>
+
+<dialog class="Drawer" id="drawer" aria-label="Menú de navegación">
+	<div class="Drawer-sheet">
+		<button class="drawer-close" type="button" id="drawer-close" autofocus>
+			Cerrar
+		</button>
+		<nav aria-label="Móvil">
+			<ul>
+				{
+					links.map((link) => (
+						<li>
+							<a href={link.href} data-drawer-link>
+								{link.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+	</div>
+</dialog>
+
+<script>
+	const drawer = document.getElementById('drawer');
+	const openBtn = document.getElementById('drawer-open');
+	const closeBtn = document.getElementById('drawer-close');
+
+	if (
+		drawer instanceof HTMLDialogElement &&
+		openBtn instanceof HTMLButtonElement &&
+		closeBtn instanceof HTMLButtonElement
+	) {
+		const setExpanded = (value: boolean) => {
+			openBtn.setAttribute('aria-expanded', String(value));
+		};
+
+		const openDrawer = () => {
+			drawer.showModal();
+			setExpanded(true);
+		};
+
+		const closeDrawer = () => {
+			drawer.close();
+			setExpanded(false);
+		};
+
+		openBtn.addEventListener('click', openDrawer);
+		closeBtn.addEventListener('click', closeDrawer);
+
+		drawer.addEventListener('click', (event) => {
+			if (event.target === drawer) closeDrawer();
+		});
+
+		drawer.addEventListener('cancel', (event) => {
+			event.preventDefault();
+			closeDrawer();
+		});
+
+		drawer.querySelectorAll('[data-drawer-link]').forEach((link) => {
+			link.addEventListener('click', () => closeDrawer());
+		});
+	}
+</script>

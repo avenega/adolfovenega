@@ -1,0 +1,182 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import { profile } from '../data/profile';
+
+const formatRange = (start: string, end: string | null) => {
+	const fmt = (value: string) => {
+		const [year, month] = value.split('-').map(Number);
+		const date = new Date(year, month - 1, 1);
+		return new Intl.DateTimeFormat('es-PY', {
+			month: 'short',
+			year: 'numeric',
+		}).format(date);
+	};
+	return `${fmt(start)} — ${end ? fmt(end) : 'Actualidad'}`;
+};
+---
+
+<Base>
+	<SiteHeader />
+
+	<main id="contenido">
+		<section class="hero site-shell reveal" id="inicio" aria-labelledby="hero-brand">
+			<div>
+				<p class="section__eyebrow">{profile.location}</p>
+				<h1 class="hero__brand" id="hero-brand">{profile.shortName}</h1>
+				<p class="hero__headline">{profile.title}</p>
+				<p class="hero__lede">{profile.tagline}</p>
+				<div class="cta-row">
+					<a class="button button--primary" href="#contacto">Contacto</a>
+					<a class="button button--ghost" href={profile.links.linkedin} rel="noopener noreferrer">
+						LinkedIn
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<section class="section site-shell" id="sobre-mi" aria-labelledby="sobre-title">
+			<div class="section__header">
+				<p class="section__eyebrow">Perfil</p>
+				<h2 class="section__title" id="sobre-title">Sobre mí</h2>
+				<p class="section__copy">{profile.summary}</p>
+			</div>
+		</section>
+
+		<section class="section site-shell" id="experiencia" aria-labelledby="exp-title">
+			<div class="section__header">
+				<p class="section__eyebrow">Trayectoria</p>
+				<h2 class="section__title" id="exp-title">Experiencia</h2>
+				<p class="section__copy">
+					Roles de desarrollo, calidad y operación en equipos de producto e infraestructura.
+				</p>
+			</div>
+
+			<div class="timeline">
+				{
+					profile.experience.map((job) => (
+						<article>
+							<h3>
+								{job.role}
+								{' · '}
+								{job.companyUrl ? (
+									<a href={job.companyUrl} rel="noopener noreferrer">
+										{job.company}
+									</a>
+								) : (
+									job.company
+								)}
+							</h3>
+							<p class="meta">
+								{formatRange(job.start, job.end)} · {job.location}
+							</p>
+							<ul>
+								{job.highlights.map((item) => (
+									<li>{item}</li>
+								))}
+							</ul>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="section site-shell" id="proyectos" aria-labelledby="proj-title">
+			<div class="section__header">
+				<p class="section__eyebrow">Selección</p>
+				<h2 class="section__title" id="proj-title">Proyectos</h2>
+				<p class="section__copy">
+					Trabajo público reciente con Astro y Cloudflare.
+				</p>
+			</div>
+
+			{
+				profile.projects.map((project) => (
+					<article class="project">
+						<h3>{project.name}</h3>
+						<p>{project.description}</p>
+						<div class="skills" aria-label="Tecnologías">
+							{project.tags.map((tag) => (
+								<span>{tag}</span>
+							))}
+						</div>
+						<div class="project__links">
+							<a href={project.url} rel="noopener noreferrer">
+								Ver sitio
+							</a>
+							<a href={project.repo} rel="noopener noreferrer">
+								Código en GitHub
+							</a>
+						</div>
+					</article>
+				))
+			}
+		</section>
+
+		<section class="section site-shell" id="habilidades" aria-labelledby="skills-title">
+			<div class="section__header">
+				<p class="section__eyebrow">Stack</p>
+				<h2 class="section__title" id="skills-title">Habilidades</h2>
+				<p class="section__copy">
+					Herramientas y prácticas que uso en desarrollo, QA e infraestructura.
+				</p>
+			</div>
+			<div class="skills">
+				{profile.skills.map((skill) => <span>{skill}</span>)}
+			</div>
+		</section>
+
+		<section class="section site-shell" id="educacion" aria-labelledby="edu-title">
+			<div class="section__header">
+				<p class="section__eyebrow">Formación</p>
+				<h2 class="section__title" id="edu-title">Educación y cursos</h2>
+			</div>
+
+			<ul class="education-list">
+				{
+					profile.education.map((item) => (
+						<li>
+							<strong>{item.degree}</strong>
+							<span>
+								{item.school} · {item.detail}
+							</span>
+						</li>
+					))
+				}
+			</ul>
+
+			<ul class="course-list" style="margin-top: 1.5rem;">
+				{profile.courses.map((course) => <li>{course}</li>)}
+			</ul>
+		</section>
+
+		<section class="section site-shell" id="contacto" aria-labelledby="contact-title">
+			<div class="section__header">
+				<p class="section__eyebrow">Hablemos</p>
+				<h2 class="section__title" id="contact-title">Contacto</h2>
+				<p class="section__copy">
+					Podés escribirme por LinkedIn o revisar mi trabajo en GitHub.
+				</p>
+			</div>
+			<div class="cta-row">
+				<a class="button button--primary" href={profile.links.linkedin} rel="noopener noreferrer">
+					LinkedIn
+				</a>
+				<a class="button button--ghost" href={profile.links.github} rel="noopener noreferrer">
+					GitHub
+				</a>
+			</div>
+		</section>
+	</main>
+
+	<footer class="site-footer">
+		<div class="site-shell site-footer__inner">
+			<p>© {new Date().getFullYear()} {profile.name}</p>
+			<p>
+				<a href="/api/profile">API de perfil</a>
+				{' · '}
+				Desplegado en Cloudflare Pages
+			</p>
+		</div>
+	</footer>
+</Base>

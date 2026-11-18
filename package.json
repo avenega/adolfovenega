@@ -1,0 +1,25 @@
+{
+  "name": "adolfovenega",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "deploy": "npm run build && CLOUDFLARE_ACCOUNT_ID=a84289ba63524e45986a67981048f12f wrangler pages deploy dist --project-name adolfo-venega",
+    "dev:pages": "npm run build && wrangler pages dev dist",
+    "preview:pages": "wrangler pages dev dist"
+  },
+  "dependencies": {
+    "astro": "^7.4.12"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261118.1",
+    "typescript": "^7.0.2",
+    "wrangler": "^4.164.0"
+  }
+}

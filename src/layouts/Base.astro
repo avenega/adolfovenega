@@ -1,0 +1,64 @@
+---
+import '../styles/global.css';
+import { profile } from '../data/profile';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = `${profile.shortName} · ${profile.title}`,
+	description = profile.tagline,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'Person',
+	name: profile.name,
+	jobTitle: profile.title,
+	url: Astro.site?.href,
+	address: {
+		'@type': 'PostalAddress',
+		addressLocality: 'Asunción',
+		addressCountry: 'PY',
+	},
+	sameAs: [profile.links.linkedin, profile.links.github],
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="color-scheme" content="light dark" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<meta name="author" content={profile.name} />
+		<link rel="canonical" href={canonical} />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:locale" content="es_PY" />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+	</head>
+	<body>
+		<a class="visually-hidden" href="#contenido">Saltar al contenido</a>
+		<slot />
+	</body>
+</html>
