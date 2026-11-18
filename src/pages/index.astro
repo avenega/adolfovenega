@@ -20,7 +20,7 @@ const formatRange = (start: string, end: string | null) => {
 	<SiteHeader />
 
 	<main id="contenido">
-		<section class="hero site-shell reveal" id="inicio" aria-labelledby="hero-brand">
+		<section class="hero site-shell reveal" id="inicio" aria-labelledby="hero-brand" tabindex="-1">
 			<div class="hero__visual" aria-hidden="true"></div>
 			<div class="hero__grid">
 				<div>
@@ -42,16 +42,21 @@ const formatRange = (start: string, end: string | null) => {
 			</div>
 		</section>
 
-		<section class="section site-shell" id="sobre-mi" aria-labelledby="sobre-title">
-			<div class="section__header">
+		<section class="section site-shell" id="sobre-mi" aria-labelledby="sobre-title" tabindex="-1">
+			<div class="section__header motion-reveal">
 				<p class="section__eyebrow">Perfil</p>
 				<h2 class="section__title" id="sobre-title">Sobre mí</h2>
 				<p class="section__copy">{profile.summary}</p>
 			</div>
 		</section>
 
-		<section class="section site-shell" id="experiencia" aria-labelledby="exp-title">
-			<div class="section__header">
+		<section
+			class="section section--deferred site-shell"
+			id="experiencia"
+			aria-labelledby="exp-title"
+			tabindex="-1"
+		>
+			<div class="section__header motion-reveal">
 				<p class="section__eyebrow">Trayectoria</p>
 				<h2 class="section__title" id="exp-title">Experiencia</h2>
 				<p class="section__copy">
@@ -62,7 +67,7 @@ const formatRange = (start: string, end: string | null) => {
 			<div class="timeline">
 				{
 					profile.experience.map((job) => (
-						<article>
+						<article class="motion-reveal motion-reveal--card">
 							<h3>
 								{job.role}
 								{' · '}
@@ -88,8 +93,13 @@ const formatRange = (start: string, end: string | null) => {
 			</div>
 		</section>
 
-		<section class="section site-shell" id="proyectos" aria-labelledby="proj-title">
-			<div class="section__header">
+		<section
+			class="section section--deferred site-shell"
+			id="proyectos"
+			aria-labelledby="proj-title"
+			tabindex="-1"
+		>
+			<div class="section__header motion-reveal">
 				<p class="section__eyebrow">Selección</p>
 				<h2 class="section__title" id="proj-title">Proyectos</h2>
 				<p class="section__copy">
@@ -101,7 +111,7 @@ const formatRange = (start: string, end: string | null) => {
 			<div class="project-grid">
 				{
 					profile.projects.map((project) => (
-						<article class="project">
+						<article class="project motion-reveal motion-reveal--card">
 							<h3>{project.name}</h3>
 							<p>{project.description}</p>
 							<div class="skills" aria-label="Tecnologías">
@@ -127,21 +137,33 @@ const formatRange = (start: string, end: string | null) => {
 			</div>
 		</section>
 
-		<section class="section site-shell" id="habilidades" aria-labelledby="skills-title">
-			<div class="section__header">
+		<section
+			class="section section--deferred site-shell"
+			id="habilidades"
+			aria-labelledby="skills-title"
+			tabindex="-1"
+		>
+			<div class="section__header motion-reveal">
 				<p class="section__eyebrow">Stack</p>
 				<h2 class="section__title" id="skills-title">Habilidades</h2>
 				<p class="section__copy">
 					Herramientas que uso en desarrollo, móvil, edge e infraestructura.
 				</p>
 			</div>
-			<div class="skills">
-				{profile.skills.map((skill) => <span>{skill}</span>)}
+			<div class="skills skills--motion">
+				{profile.skills.map((skill) => (
+					<span class="motion-reveal motion-reveal--chip">{skill}</span>
+				))}
 			</div>
 		</section>
 
-		<section class="section site-shell" id="educacion" aria-labelledby="edu-title">
-			<div class="section__header">
+		<section
+			class="section section--deferred site-shell"
+			id="educacion"
+			aria-labelledby="edu-title"
+			tabindex="-1"
+		>
+			<div class="section__header motion-reveal">
 				<p class="section__eyebrow">Formación</p>
 				<h2 class="section__title" id="edu-title">Educación y cursos</h2>
 			</div>
@@ -149,7 +171,7 @@ const formatRange = (start: string, end: string | null) => {
 			<ul class="education-list">
 				{
 					profile.education.map((item) => (
-						<li>
+						<li class="motion-reveal motion-reveal--card">
 							<strong>{item.degree}</strong>
 							<span>
 								{item.school} · {item.detail}
@@ -159,20 +181,30 @@ const formatRange = (start: string, end: string | null) => {
 				}
 			</ul>
 
-			<ul class="course-list">
-				{profile.courses.map((course) => <li>{course}</li>)}
-			</ul>
+			<details class="courses-disclosure motion-reveal">
+				<summary>Ver cursos y certificaciones ({profile.courses.length})</summary>
+				<ul class="course-list">
+					{profile.courses.map((course) => (
+						<li>{course}</li>
+					))}
+				</ul>
+			</details>
 		</section>
 
-		<section class="section site-shell" id="contacto" aria-labelledby="contact-title">
-			<div class="section__header">
+		<section
+			class="section section--deferred site-shell"
+			id="contacto"
+			aria-labelledby="contact-title"
+			tabindex="-1"
+		>
+			<div class="section__header motion-reveal">
 				<p class="section__eyebrow">Hablemos</p>
 				<h2 class="section__title" id="contact-title">Contacto</h2>
 				<p class="section__copy">
 					Escribime por LinkedIn o revisá mi trabajo en GitHub.
 				</p>
 			</div>
-			<div class="cta-row">
+			<div class="cta-row motion-reveal">
 				<a class="button button--primary" href={profile.links.linkedin} rel="noopener noreferrer">
 					LinkedIn
 				</a>
@@ -184,7 +216,7 @@ const formatRange = (start: string, end: string | null) => {
 	</main>
 
 	<footer class="site-footer">
-		<div class="site-shell site-footer__grid">
+		<div class="site-shell site-footer__grid motion-reveal">
 			<div class="site-footer__brand">
 				<a class="site-footer__logo" href="#inicio">{profile.shortName}</a>
 				<p class="site-footer__tagline">

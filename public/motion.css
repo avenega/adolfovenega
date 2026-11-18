@@ -1,0 +1,103 @@
+/* Kept outside Vite/LightningCSS so modern CSS features are not stripped/warned away. */
+
+.site-menu {
+	scroll-target-group: auto;
+}
+
+.site-menu a:is(:target-current, .target-current) {
+	color: var(--ink);
+	background: color-mix(in oklab, var(--accent) 14%, transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	@supports (animation-timeline: scroll()) {
+		@keyframes grow-progress {
+			from {
+				transform: scaleX(0);
+			}
+			to {
+				transform: scaleX(1);
+			}
+		}
+
+		.scroll-progress {
+			animation: grow-progress auto linear;
+			animation-timeline: scroll(root block);
+		}
+	}
+
+	@supports ((animation-timeline: view()) and (animation-range: entry)) {
+		@keyframes reveal-rise {
+			from {
+				opacity: 0;
+				transform: translateY(1.15rem);
+			}
+		}
+
+		@keyframes reveal-card {
+			from {
+				opacity: 0;
+				transform: translateY(1.35rem) scale(0.985);
+			}
+		}
+
+		@keyframes reveal-chip {
+			from {
+				opacity: 0;
+				transform: translateY(0.7rem) scale(0.96);
+			}
+		}
+
+		@keyframes hero-parallax {
+			to {
+				transform: translate3d(-4%, 16%, 0) scale(1.06);
+				opacity: 0.28;
+			}
+		}
+
+		@keyframes hero-copy-drift {
+			to {
+				transform: translateY(-8%);
+				opacity: 0.72;
+			}
+		}
+
+		.motion-reveal {
+			animation: reveal-rise auto linear both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 42%;
+		}
+
+		.motion-reveal--card {
+			animation-name: reveal-card;
+			animation-range: entry 5% entry 48%;
+		}
+
+		.motion-reveal--chip {
+			animation-name: reveal-chip;
+			animation-range: entry 10% entry 55%;
+		}
+
+		.skills--motion .motion-reveal--chip:nth-child(3n + 2) {
+			animation-range: entry 18% entry 60%;
+		}
+
+		.skills--motion .motion-reveal--chip:nth-child(3n + 3) {
+			animation-range: entry 26% entry 66%;
+		}
+
+		.hero__visual {
+			animation:
+				float-orb 16s ease-in-out infinite alternate,
+				hero-parallax linear both;
+			animation-timeline: auto, --hero;
+			animation-range: normal, exit 0% exit 100%;
+		}
+
+		.hero__grid {
+			animation: hero-copy-drift linear both;
+			animation-timeline: --hero;
+			animation-range: exit 0% exit 85%;
+		}
+	}
+}

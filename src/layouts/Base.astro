@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Motion from '../components/Motion.astro';
 import { profile } from '../data/profile';
 
 interface Props {
@@ -56,16 +57,13 @@ const jsonLd = {
 		<link rel="icon" href="/favicon.ico" sizes="any" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<meta name="theme-color" content="#0a171c" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-			rel="stylesheet"
-		/>
+		{/* motion.css stays unbundled so animation-timeline is not stripped by LightningCSS */}
+		<link rel="stylesheet" href="/motion.css" />
 		<title>{title}</title>
 		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 	</head>
 	<body>
+		<Motion />
 		<a class="visually-hidden" href="#contenido">Saltar al contenido</a>
 		<slot />
 	</body>

@@ -15,8 +15,21 @@ const links = [
 		<div class="site-shell site-header__inner">
 			<a class="brand" href="#inicio">{profile.shortName.split(' ')[0]} <span>Venega</span></a>
 
-			<nav aria-label="Principal">
-				<ul class="nav-desktop" data-nav>
+			<nav class="site-nav" aria-label="Principal">
+				<button
+					class="icon-button menu-button"
+					type="button"
+					popovertarget="site-menu"
+					popovertargetaction="toggle"
+					aria-controls="site-menu"
+					aria-label="Abrir menú"
+				>
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<path d="M4 7h16M4 12h16M4 17h16"></path>
+					</svg>
+				</button>
+
+				<ul id="site-menu" class="site-menu" popover="auto" data-nav>
 					{
 						links.map((link) => (
 							<li>
@@ -46,59 +59,22 @@ const links = [
 						></path>
 					</svg>
 				</button>
-
-				<button
-					class="icon-button menu-button"
-					type="button"
-					id="drawer-open"
-					aria-label="Abrir menú"
-					aria-expanded="false"
-					aria-controls="drawer"
-				>
-					<svg viewBox="0 0 24 24" aria-hidden="true">
-						<path d="M4 7h16M4 12h16M4 17h16"></path>
-					</svg>
-				</button>
 			</div>
 		</div>
 	</div>
 </header>
 
-<dialog class="Drawer" id="drawer" aria-label="Menú de navegación">
-	<div class="Drawer-sheet">
-		<button
-			class="icon-button drawer-close"
-			type="button"
-			id="drawer-close"
-			aria-label="Cerrar menú"
-			autofocus
-		>
-			<svg viewBox="0 0 24 24" aria-hidden="true">
-				<path d="M6 6l12 12M18 6L6 18"></path>
-			</svg>
-		</button>
-		<nav aria-label="Móvil">
-			<ul data-nav>
-				{
-					links.map((link) => (
-						<li>
-							<a href={link.href} data-drawer-link data-nav-link>
-								{link.label}
-							</a>
-						</li>
-					))
-				}
-			</ul>
-		</nav>
-	</div>
-</dialog>
-
 <script>
+	if (!Object.hasOwn(HTMLElement.prototype, 'popover')) {
+		void import('@oddbird/popover-polyfill');
+	}
+
 	const meta = document.querySelector('meta[name="color-scheme"]');
 	const themeBtn = document.getElementById('theme-toggle');
-	const drawer = document.getElementById('drawer');
-	const openBtn = document.getElementById('drawer-open');
-	const closeBtn = document.getElementById('drawer-close');
+	const header = document.querySelector('.site-header');
+	const inner = document.querySelector('.site-header__inner');
+	const menu = document.getElementById('site-menu');
+	const menuButton = document.querySelector('.menu-button');
 
 	const getSystemScheme = () =>
 		window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -150,56 +126,171 @@ const links = [
 		meta.content = event.newValue ?? 'light dark';
 	});
 
-	if (
-		drawer instanceof HTMLDialogElement &&
-		openBtn instanceof HTMLButtonElement &&
-		closeBtn instanceof HTMLButtonElement
-	) {
-		const setExpanded = (value: boolean) => {
-			openBtn.setAttribute('aria-expanded', String(value));
-		};
+	let lastCollapsedWidth = 0;
 
-		const openDrawer = () => {
-			drawer.showModal();
-			setExpanded(true);
-		};
+	const isMenuOpen = () => {
+		if (!(menu instanceof HTMLElement)) return false;
+		return menu.matches(':popover-open, .\\:popover-open');
+	};
 
-		const closeDrawer = () => {
-			drawer.close();
-			setExpanded(false);
-		};
+	const clearMenuPosition = () => {
+		if (!(menu instanceof HTMLElement)) return;
+		menu.style.top = '';
+		menu.style.left = '';
+		menu.style.right = '';
+	};
 
-		openBtn.addEventListener('click', openDrawer);
-		closeBtn.addEventListener('click', closeDrawer);
+	const placeMenuNearButton = () => {
+		if (
+			!(menu instanceof HTMLElement) ||
+			!(menuButton instanceof HTMLElement) ||
+			!(header instanceof HTMLElement) ||
+			header.classList.contains('is-wide') ||
+			CSS.supports('position-area', 'block-end')
+		) {
+			return;
+		}
 
-		drawer.addEventListener('click', (event) => {
-			if (event.target === drawer) closeDrawer();
+		const trigger = menuButton.getBoundingClientRect();
+		const panel = menu.getBoundingClientRect();
+		const gap = 8;
+		const gutter = 12;
+		let top = trigger.bottom + gap;
+		let left = trigger.right - panel.width;
+
+		if (top + panel.height > window.innerHeight - gutter) {
+			top = Math.max(gutter, trigger.top - panel.height - gap);
+		}
+		left = Math.min(left, window.innerWidth - panel.width - gutter);
+		left = Math.max(gutter, left);
+
+		menu.style.top = `${top}px`;
+		menu.style.left = `${left}px`;
+		menu.style.right = 'auto';
+	};
+
+	const syncNavLayout = () => {
+		if (
+			!(header instanceof HTMLElement) ||
+			!(inner instanceof HTMLElement) ||
+			!(menu instanceof HTMLElement)
+		) {
+			return;
+		}
+
+		const wasOpen = isMenuOpen();
+		const currentlyWide = header.classList.contains('is-wide');
+
+		if (!currentlyWide && lastCollapsedWidth > 0 && inner.clientWidth < lastCollapsedWidth) {
+			return;
+		}
+
+		header.classList.add('is-measuring', 'is-wide');
+		menu.removeAttribute('popover');
+
+		const fits = inner.scrollWidth <= inner.clientWidth + 1;
+		header.classList.toggle('is-wide', fits);
+
+		if (fits) {
+			menu.removeAttribute('popover');
+			clearMenuPosition();
+			lastCollapsedWidth = 0;
+		} else {
+			menu.setAttribute('popover', 'auto');
+			lastCollapsedWidth = inner.clientWidth;
+			if (wasOpen && 'showPopover' in menu) {
+				try {
+					(menu as HTMLElement & { showPopover: () => void }).showPopover();
+				} catch {}
+			}
+		}
+
+		requestAnimationFrame(() => {
+			header.classList.remove('is-measuring');
 		});
+	};
 
-		drawer.addEventListener('cancel', (event) => {
-			event.preventDefault();
-			closeDrawer();
-		});
-
-		drawer.querySelectorAll('[data-drawer-link]').forEach((link) => {
-			link.addEventListener('click', () => closeDrawer());
-		});
+	if (header instanceof HTMLElement && menu instanceof HTMLElement) {
+		const resizeObserver = new ResizeObserver(() => syncNavLayout());
+		resizeObserver.observe(header);
+		resizeObserver.observe(menu);
+		if (document.fonts?.ready) {
+			void document.fonts.ready.then(() => syncNavLayout());
+		}
+		syncNavLayout();
 	}
 
-	const sections = ['sobre-mi', 'experiencia', 'proyectos', 'habilidades', 'educacion', 'contacto']
-		.map((id) => document.getElementById(id))
-		.filter((el): el is HTMLElement => el instanceof HTMLElement);
+	menu?.addEventListener('toggle', (event) => {
+		const open =
+			'newState' in event
+				? (event as ToggleEvent).newState === 'open'
+				: isMenuOpen();
+		menuButton?.setAttribute('aria-expanded', String(open));
+		if (open) {
+			requestAnimationFrame(() => placeMenuNearButton());
+		} else {
+			clearMenuPosition();
+		}
+	});
 
 	const navLinks = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
+	const supportsScrollTargetGroup = CSS.supports('scroll-target-group: auto');
 
 	const setCurrent = (id: string | null) => {
 		for (const link of navLinks) {
 			const href = link.getAttribute('href');
 			const active = id !== null && href === `#${id}`;
+			if (active) {
+				link.setAttribute('aria-current', 'true');
+				link.classList.add('target-current');
+			} else {
+				link.removeAttribute('aria-current');
+				link.classList.remove('target-current');
+			}
+		}
+	};
+
+	const syncAriaFromTargetCurrent = () => {
+		const current = document.querySelector<HTMLAnchorElement>(
+			'.site-menu a:target-current, .site-menu a.target-current',
+		);
+		for (const link of navLinks) {
+			const active = link === current;
 			if (active) link.setAttribute('aria-current', 'true');
 			else link.removeAttribute('aria-current');
 		}
 	};
+
+	if (supportsScrollTargetGroup) {
+		syncAriaFromTargetCurrent();
+		document.addEventListener('scrollend', syncAriaFromTargetCurrent);
+	} else {
+		const sections = ['sobre-mi', 'experiencia', 'proyectos', 'habilidades', 'educacion', 'contacto']
+			.map((id) => document.getElementById(id))
+			.filter((el): el is HTMLElement => el instanceof HTMLElement);
+
+		if (sections.length && 'IntersectionObserver' in window) {
+			const ratios = new Map<string, number>();
+			const observer = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						ratios.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
+					}
+					let bestId: string | null = null;
+					let bestRatio = 0;
+					for (const [id, ratio] of ratios) {
+						if (ratio > bestRatio) {
+							bestRatio = ratio;
+							bestId = id;
+						}
+					}
+					setCurrent(bestId);
+				},
+				{ rootMargin: '-20% 0px -55% 0px', threshold: [0, 0.2, 0.4, 0.6, 0.8] },
+			);
+			for (const section of sections) observer.observe(section);
+		}
+	}
 
 	const clearHashFromUrl = () => {
 		if (!location.hash) return;
@@ -248,6 +339,12 @@ const links = [
 		const element = document.getElementById(id);
 		if (!(element instanceof HTMLElement)) return false;
 
+		if (isMenuOpen() && menu && 'hidePopover' in menu) {
+			try {
+				(menu as HTMLElement & { hidePopover: () => void }).hidePopover();
+			} catch {}
+		}
+
 		const token = ++scrollToken;
 		await scrollIntoViewAsync(element, {
 			behavior: prefersReducedMotion() ? 'auto' : 'smooth',
@@ -257,6 +354,7 @@ const links = [
 		if (token !== scrollToken) return true;
 		if (focus) focusTarget(element);
 		clearHashFromUrl();
+		if (supportsScrollTargetGroup) syncAriaFromTargetCurrent();
 		return true;
 	};
 
@@ -280,28 +378,5 @@ const links = [
 		void goToSection(id, { focus: false }).then((ok) => {
 			if (!ok) clearHashFromUrl();
 		});
-	}
-
-	if (sections.length && 'IntersectionObserver' in window) {
-		const ratios = new Map<string, number>();
-		const observer = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) {
-					ratios.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
-				}
-				let bestId: string | null = null;
-				let bestRatio = 0;
-				for (const [id, ratio] of ratios) {
-					if (ratio > bestRatio) {
-						bestRatio = ratio;
-						bestId = id;
-					}
-				}
-				setCurrent(bestId);
-			},
-			{ rootMargin: '-20% 0px -55% 0px', threshold: [0, 0.2, 0.4, 0.6, 0.8] },
-		);
-
-		for (const section of sections) observer.observe(section);
 	}
 </script>

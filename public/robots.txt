@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://adolfo-venega.is-a.dev/sitemap.xml
