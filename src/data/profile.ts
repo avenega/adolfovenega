@@ -6,7 +6,7 @@ export const profile = {
 	tagline:
 		'Diseño y mantengo ERPs, APIs y apps móviles con Laravel, Cloudflare y React Native: de facturación electrónica a operación en Kubernetes.',
 	summary:
-		'Desarrollador full stack en Paraguay con foco en producto empresarial. En Innit trabajo sobre una familia de ERPs Laravel (contabilidad, ventas, caja, comisiones, mapas), facturación electrónica SIFEN, apps móviles con Expo/NFC y despliegues Docker/Kubernetes. Antes combiné desarrollo backend, QA y administración de sistemas en Inmobiliaria del Este. También construyo productos propios: finanzas personales, paneles en Cloudflare Workers y sitios con Astro.',
+		'Desarrollador full stack en Paraguay con foco en producto empresarial. En Innit trabajo sobre una familia de ERPs Laravel (contabilidad, ventas, caja, comisiones, mapas), facturación electrónica, apps móviles con Expo/NFC y despliegues Docker/Kubernetes. Antes combiné desarrollo backend, QA y administración de sistemas en Inmobiliaria del Este. También construyo productos propios: finanzas personales, paneles en Cloudflare Workers y sitios con Astro.',
 	links: {
 		linkedin: 'https://www.linkedin.com/in/adolfo-venega/',
 		github: 'https://github.com/avenega',
@@ -23,7 +23,7 @@ export const profile = {
 			end: null,
 			highlights: [
 				'Desarrollo y mantenimiento de ERPs multi-cliente en Laravel + Livewire (ventas, clientes, contabilidad, caja, presupuestos, comisiones y reportes).',
-				'Integración de facturación electrónica paraguaya con el SDK SIFEN en entornos de producción.',
+				'Integración con facturación electrónica en los ERPs de clientes.',
 				'Apps móviles con React Native/Expo: grabación NFC de activos (Emcesa) y paneles operativos conectados a APIs Sanctum.',
 				'Operación con Docker, Helm y Kubernetes (ingress, WAF/ModSecurity, CI/CD en GitLab) para varios dominios de clientes.',
 				'APIs, realtime (Reverb/Echo), colas Horizon, Octane y almacenamiento en Azure Blob.',
@@ -85,7 +85,6 @@ export const profile = {
 		'Astro',
 		'Cloudflare Workers',
 		'D1',
-		'SIFEN',
 		'NFC',
 		'Sanctum',
 		'Horizon',
@@ -116,10 +115,10 @@ export const profile = {
 		{
 			name: 'ERPs Laravel multi-cliente',
 			description:
-				'Familia de ERPs empresariales (Innit, Aguape, Becca, Margraf, Tix, Innsight, Tobiano e inmobiliario) con módulos de ventas, contabilidad, caja, comisiones, mapas Leaflet y facturación electrónica SIFEN. Despliegue con Docker, Helm y Kubernetes.',
+				'Familia de ERPs empresariales (Innit, Aguape, Becca, Margraf, Tix, Innsight, Tobiano e inmobiliario) con módulos de ventas, contabilidad, caja, comisiones, mapas Leaflet y facturación electrónica. Despliegue con Docker, Helm y Kubernetes.',
 			url: null,
 			repo: null,
-			tags: ['Laravel', 'Livewire', 'SIFEN', 'Docker', 'Kubernetes', 'MySQL'],
+			tags: ['Laravel', 'Livewire', 'Docker', 'Kubernetes', 'MySQL'],
 		},
 		{
 			name: 'Emcesa — NFC móvil + API',
