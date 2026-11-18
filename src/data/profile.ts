@@ -112,6 +112,38 @@ export const profile = {
 			repo: 'https://github.com/avenega/semingenieria',
 			tags: ['Astro', 'Cloudflare Workers', 'D1', 'R2', 'React'],
 		},
+		{
+			name: 'ERPs multi-cliente',
+			description:
+				'Familia de ERPs empresariales en Laravel + Livewire: ventas, contabilidad, caja, comisiones, mapas Leaflet y facturación electrónica. Despliegue con Docker, Helm y Kubernetes.',
+			url: null,
+			repo: null,
+			tags: ['Laravel', 'Livewire', 'Docker', 'Kubernetes', 'MySQL'],
+		},
+		{
+			name: 'App móvil NFC + API',
+			description:
+				'App React Native/Expo para lectura y escritura NFC, biometría y roles operativos, con API Laravel + Sanctum e importación de maestros Excel.',
+			url: null,
+			repo: null,
+			tags: ['React Native', 'Expo', 'NFC', 'Laravel', 'Sanctum'],
+		},
+		{
+			name: 'Budget',
+			description:
+				'App de finanzas personales (Expo) con ingresos/egresos, deudas, obligaciones, presupuestos multidivisa PYG/USD y API Laravel con login Google.',
+			url: null,
+			repo: 'https://github.com/avenega/budget',
+			tags: ['Expo', 'React Native', 'Laravel', 'MySQL', 'Google Auth'],
+		},
+		{
+			name: 'Portafolio personal',
+			description:
+				'Sitio Astro estático en Cloudflare Pages con Functions para cabeceras de seguridad y API de perfil.',
+			url: 'https://adolfo-venega.pages.dev',
+			repo: 'https://github.com/avenega/adolfovenega',
+			tags: ['Astro', 'Cloudflare Pages', 'TypeScript'],
+		},
 	],
 } as const;
 
