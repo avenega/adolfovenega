@@ -201,6 +201,87 @@ const links = [
 		}
 	};
 
+	const clearHashFromUrl = () => {
+		if (!location.hash) return;
+		history.replaceState(null, '', `${location.pathname}${location.search}`);
+	};
+
+	const prefersReducedMotion = () =>
+		window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	let scrollToken = 0;
+
+	const scrollIntoViewAsync = (element: HTMLElement, options: ScrollIntoViewOptions) => {
+		const result = element.scrollIntoView(options);
+		if (result instanceof Promise) return result;
+
+		return new Promise<void>((resolve) => {
+			let timeoutId = 0;
+			const finish = () => {
+				window.clearTimeout(timeoutId);
+				window.removeEventListener('scrollend', finish);
+				window.removeEventListener('scroll', onScroll);
+				resolve();
+			};
+			const onScroll = () => {
+				window.clearTimeout(timeoutId);
+				timeoutId = window.setTimeout(finish, 100);
+			};
+			window.addEventListener('scrollend', finish, { once: true });
+			window.addEventListener('scroll', onScroll, { passive: true });
+			timeoutId = window.setTimeout(finish, 100);
+		});
+	};
+
+	const focusTarget = (element: HTMLElement) => {
+		const heading = element.matches('h1, h2, h3, h4, h5, h6')
+			? element
+			: element.querySelector<HTMLElement>('h1, h2, h3, h4, h5, h6');
+		const target = heading ?? element;
+		if (!target.hasAttribute('tabindex') && !target.matches('a, button, input, textarea, select')) {
+			target.tabIndex = -1;
+		}
+		target.focus({ preventScroll: true });
+	};
+
+	const goToSection = async (id: string, { focus = true }: { focus?: boolean } = {}) => {
+		const element = document.getElementById(id);
+		if (!(element instanceof HTMLElement)) return false;
+
+		const token = ++scrollToken;
+		await scrollIntoViewAsync(element, {
+			behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+			block: 'start',
+		});
+
+		if (token !== scrollToken) return true;
+		if (focus) focusTarget(element);
+		clearHashFromUrl();
+		return true;
+	};
+
+	document.addEventListener('click', (event) => {
+		const link = (event.target as Element | null)?.closest?.('a[href^="#"]');
+		if (!(link instanceof HTMLAnchorElement)) return;
+		if (link.origin !== location.origin || link.pathname !== location.pathname) return;
+
+		const href = link.getAttribute('href');
+		if (!href || href === '#') return;
+
+		const id = decodeURIComponent(href.slice(1));
+		if (!document.getElementById(id)) return;
+
+		event.preventDefault();
+		void goToSection(id);
+	});
+
+	if (location.hash) {
+		const id = decodeURIComponent(location.hash.slice(1));
+		void goToSection(id, { focus: false }).then((ok) => {
+			if (!ok) clearHashFromUrl();
+		});
+	}
+
 	if (sections.length && 'IntersectionObserver' in window) {
 		const ratios = new Map<string, number>();
 		const observer = new IntersectionObserver(

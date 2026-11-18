@@ -184,13 +184,44 @@ const formatRange = (start: string, end: string | null) => {
 	</main>
 
 	<footer class="site-footer">
-		<div class="site-shell site-footer__inner">
+		<div class="site-shell site-footer__grid">
+			<div class="site-footer__brand">
+				<a class="site-footer__logo" href="#inicio">{profile.shortName}</a>
+				<p class="site-footer__tagline">
+					{profile.title} · {profile.location}
+				</p>
+			</div>
+
+			<nav class="site-footer__nav" aria-label="Pie de página">
+				<p class="site-footer__label" id="footer-nav-label">Secciones</p>
+				<ul aria-labelledby="footer-nav-label">
+					<li><a href="#sobre-mi">Sobre mí</a></li>
+					<li><a href="#experiencia">Experiencia</a></li>
+					<li><a href="#proyectos">Proyectos</a></li>
+					<li><a href="#habilidades">Habilidades</a></li>
+					<li><a href="#contacto">Contacto</a></li>
+				</ul>
+			</nav>
+
+			<div class="site-footer__social">
+				<p class="site-footer__label">Enlaces</p>
+				<ul>
+					<li>
+						<a href={profile.links.linkedin} rel="noopener noreferrer">LinkedIn</a>
+					</li>
+					<li>
+						<a href={profile.links.github} rel="noopener noreferrer">GitHub</a>
+					</li>
+					<li>
+						<a href="/api/profile">API de perfil</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="site-shell site-footer__meta">
 			<p>© {new Date().getFullYear()} {profile.name}</p>
-			<p>
-				<a href="/api/profile">API de perfil</a>
-				{' · '}
-				Cloudflare Pages
-			</p>
+			<p>Hecho con Astro · Cloudflare Pages</p>
 		</div>
 	</footer>
 </Base>

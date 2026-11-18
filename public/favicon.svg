@@ -1,4 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AV">
-  <rect width="64" height="64" rx="14" fill="#0f2a30"/>
-  <text x="32" y="42" text-anchor="middle" font-family="Syne, Arial, sans-serif" font-size="28" font-weight="800" fill="#7ed6e0">AV</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Adolfo Venega">
+  <defs>
+    <linearGradient id="bg" x1="8" y1="4" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#14343c"/>
+      <stop offset="1" stop-color="#0a171c"/>
+    </linearGradient>
+    <linearGradient id="fg" x1="12" y1="14" x2="52" y2="50" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c5f4f8"/>
+      <stop offset="1" stop-color="#4db8c4"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#bg)"/>
+  <!-- A -->
+  <path
+    fill="url(#fg)"
+    d="M7.5 49 19.8 15h7.4L39.5 49h-7.1l-2.3-6.8H16.9L14.6 49zm10.5-12.2h10l-4.9-14.4z"
+  />
+  <!-- V -->
+  <path
+    fill="url(#fg)"
+    d="M37 15h7.2L52.5 49h-7.4L41 28.2 37.2 49H29.8z"
+  />
 </svg>
