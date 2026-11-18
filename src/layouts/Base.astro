@@ -34,6 +34,12 @@ const jsonLd = {
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="color-scheme" content="light dark" />
+		<script is:inline>
+			try {
+				document.querySelector('meta[name="color-scheme"]').content =
+					localStorage.getItem('color-scheme') ?? 'light dark';
+			} catch {}
+		</script>
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<meta name="author" content={profile.name} />
@@ -51,7 +57,7 @@ const jsonLd = {
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
 			rel="stylesheet"
 		/>
 		<title>{title}</title>

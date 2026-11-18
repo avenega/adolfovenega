@@ -21,16 +21,23 @@ const formatRange = (start: string, end: string | null) => {
 
 	<main id="contenido">
 		<section class="hero site-shell reveal" id="inicio" aria-labelledby="hero-brand">
-			<div>
-				<p class="section__eyebrow">{profile.location}</p>
-				<h1 class="hero__brand" id="hero-brand">{profile.shortName}</h1>
-				<p class="hero__headline">{profile.title}</p>
-				<p class="hero__lede">{profile.tagline}</p>
-				<div class="cta-row">
-					<a class="button button--primary" href="#contacto">Contacto</a>
-					<a class="button button--ghost" href={profile.links.linkedin} rel="noopener noreferrer">
-						LinkedIn
-					</a>
+			<div class="hero__visual" aria-hidden="true"></div>
+			<div class="hero__grid">
+				<div>
+					<p class="hero__eyebrow">{profile.location}</p>
+					<h1 class="hero__brand" id="hero-brand">{profile.shortName}</h1>
+					<p class="hero__headline">{profile.title}</p>
+					<p class="hero__lede">{profile.tagline}</p>
+					<div class="cta-row">
+						<a class="button button--primary" href="#proyectos">Ver proyectos</a>
+						<a
+							class="button button--ghost"
+							href={profile.links.linkedin}
+							rel="noopener noreferrer"
+						>
+							LinkedIn
+						</a>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -48,7 +55,7 @@ const formatRange = (start: string, end: string | null) => {
 				<p class="section__eyebrow">Trayectoria</p>
 				<h2 class="section__title" id="exp-title">Experiencia</h2>
 				<p class="section__copy">
-					Roles de desarrollo, calidad y operación en equipos de producto e infraestructura.
+					Desarrollo de producto, calidad y operación en entornos empresariales.
 				</p>
 			</div>
 
@@ -86,37 +93,38 @@ const formatRange = (start: string, end: string | null) => {
 				<p class="section__eyebrow">Selección</p>
 				<h2 class="section__title" id="proj-title">Proyectos</h2>
 				<p class="section__copy">
-					Trabajo profesional y productos propios. El único cliente público enlazado es SEM Ingeniería.
+					Trabajo profesional y productos propios. El único cliente público enlazado es SEM
+					Ingeniería.
 				</p>
 			</div>
 
-			{
-				profile.projects.map((project) => (
-					<article class="project">
-						<h3>{project.name}</h3>
-						<p>{project.description}</p>
-						<div class="skills" aria-label="Tecnologías">
-							{project.tags.map((tag) => (
-								<span>{tag}</span>
-							))}
-						</div>
-						{(project.url || project.repo) && (
-							<div class="project__links">
-								{project.url && (
-									<a href={project.url} rel="noopener noreferrer">
-										Ver sitio
-									</a>
-								)}
-								{project.repo && (
-									<a href={project.repo} rel="noopener noreferrer">
-										Código en GitHub
-									</a>
-								)}
+			<div class="project-grid">
+				{
+					profile.projects.map((project) => (
+						<article class="project">
+							<h3>{project.name}</h3>
+							<p>{project.description}</p>
+							<div class="skills" aria-label="Tecnologías">
+								{project.tags.map((tag) => <span>{tag}</span>)}
 							</div>
-						)}
-					</article>
-				))
-			}
+							{(project.url || project.repo) && (
+								<div class="project__links">
+									{project.url && (
+										<a href={project.url} rel="noopener noreferrer">
+											Ver sitio
+										</a>
+									)}
+									{project.repo && (
+										<a href={project.repo} rel="noopener noreferrer">
+											Código en GitHub
+										</a>
+									)}
+								</div>
+							)}
+						</article>
+					))
+				}
+			</div>
 		</section>
 
 		<section class="section site-shell" id="habilidades" aria-labelledby="skills-title">
@@ -124,7 +132,7 @@ const formatRange = (start: string, end: string | null) => {
 				<p class="section__eyebrow">Stack</p>
 				<h2 class="section__title" id="skills-title">Habilidades</h2>
 				<p class="section__copy">
-					Herramientas y prácticas que uso en desarrollo, QA e infraestructura.
+					Herramientas que uso en desarrollo, móvil, edge e infraestructura.
 				</p>
 			</div>
 			<div class="skills">
@@ -151,7 +159,7 @@ const formatRange = (start: string, end: string | null) => {
 				}
 			</ul>
 
-			<ul class="course-list" style="margin-top: 1.5rem;">
+			<ul class="course-list">
 				{profile.courses.map((course) => <li>{course}</li>)}
 			</ul>
 		</section>
@@ -161,7 +169,7 @@ const formatRange = (start: string, end: string | null) => {
 				<p class="section__eyebrow">Hablemos</p>
 				<h2 class="section__title" id="contact-title">Contacto</h2>
 				<p class="section__copy">
-					Podés escribirme por LinkedIn o revisar mi trabajo en GitHub.
+					Escribime por LinkedIn o revisá mi trabajo en GitHub.
 				</p>
 			</div>
 			<div class="cta-row">
@@ -181,7 +189,7 @@ const formatRange = (start: string, end: string | null) => {
 			<p>
 				<a href="/api/profile">API de perfil</a>
 				{' · '}
-				Desplegado en Cloudflare Pages
+				Cloudflare Pages
 			</p>
 		</div>
 	</footer>
