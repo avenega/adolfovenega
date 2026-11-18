@@ -10,7 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "npm run build && CLOUDFLARE_ACCOUNT_ID=a84289ba63524e45986a67981048f12f wrangler pages deploy dist --project-name adolfo-venega",
+    "deploy": "npm run build && CLOUDFLARE_ACCOUNT_ID=a84289ba63524e45986a67981048f12f wrangler pages deploy dist --project-name adolfo-venega --branch main",
     "dev:pages": "npm run build && wrangler pages dev dist",
     "preview:pages": "wrangler pages dev dist"
   },
