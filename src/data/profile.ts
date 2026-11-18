@@ -6,7 +6,7 @@ export const profile = {
 	tagline:
 		'Diseño y mantengo ERPs, APIs y apps móviles con Laravel, Cloudflare y React Native: de facturación electrónica a operación en Kubernetes.',
 	summary:
-		'Desarrollador full stack en Paraguay con foco en producto empresarial. En Innit trabajo sobre una familia de ERPs Laravel (contabilidad, ventas, caja, comisiones, mapas), facturación electrónica, apps móviles con Expo/NFC y despliegues Docker/Kubernetes. Antes combiné desarrollo backend, QA y administración de sistemas en Inmobiliaria del Este. También construyo productos propios: finanzas personales, paneles en Cloudflare Workers y sitios con Astro.',
+		'Desarrollador full stack en Paraguay con foco en producto empresarial. En Innit trabajo sobre ERPs Laravel (contabilidad, ventas, caja, comisiones, mapas), facturación electrónica, desarrollo móvil con Expo y despliegues Docker/Kubernetes. Antes combiné desarrollo backend, QA y administración de sistemas en Inmobiliaria del Este. También construyo productos propios y sitios con Astro y Cloudflare.',
 	links: {
 		linkedin: 'https://www.linkedin.com/in/adolfo-venega/',
 		github: 'https://github.com/avenega',
@@ -23,9 +23,9 @@ export const profile = {
 			end: null,
 			highlights: [
 				'Desarrollo y mantenimiento de ERPs multi-cliente en Laravel + Livewire (ventas, clientes, contabilidad, caja, presupuestos, comisiones y reportes).',
-				'Integración con facturación electrónica en los ERPs de clientes.',
-				'Apps móviles con React Native/Expo: grabación NFC de activos (Emcesa) y paneles operativos conectados a APIs Sanctum.',
-				'Operación con Docker, Helm y Kubernetes (ingress, WAF/ModSecurity, CI/CD en GitLab) para varios dominios de clientes.',
+				'Integración con facturación electrónica en los ERPs.',
+				'Desarrollo móvil con React Native/Expo: lectura y escritura NFC, autenticación biométrica, roles operativos y APIs Laravel con Sanctum.',
+				'Operación con Docker, Helm y Kubernetes (ingress, WAF/ModSecurity, CI/CD en GitLab).',
 				'APIs, realtime (Reverb/Echo), colas Horizon, Octane y almacenamiento en Azure Blob.',
 			],
 		},
@@ -111,38 +111,6 @@ export const profile = {
 			url: 'https://semingenieria.com.py',
 			repo: 'https://github.com/avenega/semingenieria',
 			tags: ['Astro', 'Cloudflare Workers', 'D1', 'R2', 'React'],
-		},
-		{
-			name: 'ERPs Laravel multi-cliente',
-			description:
-				'Familia de ERPs empresariales (Innit, Aguape, Becca, Margraf, Tix, Innsight, Tobiano e inmobiliario) con módulos de ventas, contabilidad, caja, comisiones, mapas Leaflet y facturación electrónica. Despliegue con Docker, Helm y Kubernetes.',
-			url: null,
-			repo: null,
-			tags: ['Laravel', 'Livewire', 'Docker', 'Kubernetes', 'MySQL'],
-		},
-		{
-			name: 'Emcesa — NFC móvil + API',
-			description:
-				'App React Native/Expo para grabar etiquetas NFC de heladeras, con biometría y avance operativo, respaldada por API Laravel 13 + Sanctum e importación de maestro Excel.',
-			url: null,
-			repo: null,
-			tags: ['React Native', 'Expo', 'NFC', 'Laravel', 'Sanctum'],
-		},
-		{
-			name: 'Budget',
-			description:
-				'App de finanzas personales (Expo) con ingresos/egresos, deudas, obligaciones, presupuestos multidivisa PYG/USD y API Laravel con login Google.',
-			url: null,
-			repo: 'https://github.com/avenega/budget',
-			tags: ['Expo', 'React Native', 'Laravel', 'MySQL', 'Google Auth'],
-		},
-		{
-			name: 'Portafolio personal',
-			description:
-				'Sitio Astro estático en Cloudflare Pages con Functions para cabeceras de seguridad y API de perfil.',
-			url: 'https://adolfo-venega.pages.dev',
-			repo: 'https://github.com/avenega/adolfovenega',
-			tags: ['Astro', 'Cloudflare Pages', 'TypeScript'],
 		},
 	],
 } as const;
