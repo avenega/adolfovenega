@@ -86,7 +86,7 @@ const formatRange = (start: string, end: string | null) => {
 				<p class="section__eyebrow">Selección</p>
 				<h2 class="section__title" id="proj-title">Proyectos</h2>
 				<p class="section__copy">
-					Trabajo público reciente con Astro y Cloudflare.
+					Productos propios y trabajo profesional en ERPs, móvil y edge.
 				</p>
 			</div>
 
@@ -100,14 +100,20 @@ const formatRange = (start: string, end: string | null) => {
 								<span>{tag}</span>
 							))}
 						</div>
-						<div class="project__links">
-							<a href={project.url} rel="noopener noreferrer">
-								Ver sitio
-							</a>
-							<a href={project.repo} rel="noopener noreferrer">
-								Código en GitHub
-							</a>
-						</div>
+						{(project.url || project.repo) && (
+							<div class="project__links">
+								{project.url && (
+									<a href={project.url} rel="noopener noreferrer">
+										Ver sitio
+									</a>
+								)}
+								{project.repo && (
+									<a href={project.repo} rel="noopener noreferrer">
+										Código en GitHub
+									</a>
+								)}
+							</div>
+						)}
 					</article>
 				))
 			}
